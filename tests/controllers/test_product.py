@@ -100,3 +100,12 @@ async def test_controller_delete_should_return_not_found(client, products_url):
     assert response.json() == {
         "detail": "Product not found with filter: 4fd7cd35-a3a0-4c1f-a78d-d24aa81e7dca"
     }
+
+async def test_controller_create_should_return_error_on_insertion_failure(client, products_url):
+    # Simular falha na inserção para testar exceção
+    response = await client.post(products_url, json={"name": "Test Product", "quantity": 5, "price": "1000.00", "status": True})
+    assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
+
+async def test_controller_patch_should_return_not_found(client, products_url):
+    response = await client.patch(f"{products_url}4fd7cd35-a3a0-4c1f-a78d-d24aa81e7dca", json={"price": "7.500"})
+    assert response.status_code == status.HTTP_404_NOT_FOUND

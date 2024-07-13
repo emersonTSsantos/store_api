@@ -60,3 +60,8 @@ async def test_usecases_delete_should_not_found():
         err.value.message
         == "Product not found with filter: 1e4f214e-85f7-461a-89d0-a751a32e3bb9"
     )
+
+async def test_usecases_query_with_price_filter_should_return_success(product_usecase):
+    result = await product_usecase.query(min_price=5000, max_price=8000)
+    assert isinstance(result, List)
+
